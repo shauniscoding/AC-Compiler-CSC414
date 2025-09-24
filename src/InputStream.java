@@ -10,6 +10,11 @@ public class InputStream {
     }
 
     public char Peek(){
+        if (this.stream_index >= this.input_value.length()) {
+            this.is_end_of_file = true;
+            return '\0';
+        }
+
         return input_value.charAt(stream_index);
     }
 
@@ -18,7 +23,6 @@ public class InputStream {
         this.stream_index++;
         if(this.stream_index >= input_value.length()){
             this.is_end_of_file = true;
-            System.out.println("Reached end of file");
         }
 
         return current_char;

@@ -3,6 +3,6 @@ public class Token {
     String type;
 
     public Token(){
-
+        this.val = "";
     }
 }
