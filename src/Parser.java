@@ -61,18 +61,18 @@ public class Parser {
     }
 
     public void VAL() {
-        if (ts.type.equals("num") || ts.type.equals("id")) {
-            System.out.println("Val(): Found value " + ts.val);
+        if (ts.type.equals("inum") || ts.type.equals("fnum") || ts.type.equals("id")) {
+            System.out.println("Val(): " + ts.val);
             MATCH(ts.type);  // consume it
         } else {
-            System.out.println("Error in Val(): expected 'num' or 'id' but found '" + ts.type + "'");
+            System.out.println("Error in Val(): expected 'inum','fnum', or 'id' but found " + ts.type + "'");
         }
     }
 
     public void EXPR() {
-        while (ts.type.equals("op")) {
+        while (ts.type.equals("op") || ts.type.equals("plus") || ts.type.equals("minus")) {
             System.out.println("Expr(): Found operator " + ts.val);
-            MATCH("op");
+            advance();
             VAL();
         }
     }
