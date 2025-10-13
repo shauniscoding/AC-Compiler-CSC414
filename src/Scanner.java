@@ -1,4 +1,8 @@
+import java.util.ArrayList;
 import java.util.Set;
+
+//This is the scanner class, its purpose is to turn
+// the raw text into tokens that can be used
 public class Scanner {
     //Scanner function to convert string into tokens
     public static Token Scanner(InputStream s){
@@ -74,5 +78,18 @@ public class Scanner {
         }
 
         return tok;
+    }
+
+    public static ArrayList<Token> getTokenList(String input){
+        InputStream s = new InputStream(input);
+        ArrayList<Token> tokenList = new ArrayList<Token>();
+        Token token;
+        do {
+            token = Scanner.Scanner(s);
+            tokenList.add(token);
+            System.out.println("type:" + token.type + " val:" + token.val);
+        } while(!token.type.equals("$"));
+
+        return tokenList;
     }
 }
