@@ -70,10 +70,10 @@ public class Parser {
     }
 
     public void EXPR() {
-        while (ts.type.equals("plus") || ts.type.equals("minus")) {
+        while (ts.type.equals("plus") || ts.type.equals("minus")) { //THis while loop accounts for mulitple operations ex. 3 + 2 + 1
             System.out.println("Expr(): Found operator " + ts.val);
             MATCH(ts.type);
-            VAL();
+            VAL(); //This VAL handles any additional values part of the expression after the operator
         }
     }
 
