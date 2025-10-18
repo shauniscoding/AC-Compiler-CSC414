@@ -84,5 +84,4 @@ public class Parser {
             System.out.println("Error in MATCH(): expected " + expectedType + " but found " + ts.type);
         }
     }
-
 }
