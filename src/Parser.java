@@ -23,7 +23,7 @@ public class Parser {
                 nodeType = "floatdcl";
             }
 
-            parsedNodes.add(new ParsedToken(nodeId, nodeType, nodeVal));
+            parsedNodes.add(new ParsedToken(nodeId, nodeType));
             VAL();
             EXPR();
         }
@@ -33,7 +33,7 @@ public class Parser {
                 String nodeId = ts.val; //save id before its consumed
                 MATCH("id");
 
-                parsedNodes.add(new ParsedToken(nodeId, "print", null));
+                parsedNodes.add(new ParsedToken(nodeId, "print"));
             }
             else{
                 System.out.println("Error in STMT invalid type: " + ts.type);

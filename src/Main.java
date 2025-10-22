@@ -10,7 +10,7 @@ public class Main {
         parser.Parse();
 
 
-        ArrayList<ParsedToken> parsedTokens = new ArrayList<ParsedToken>();
+        ArrayList<ParsedToken> parsedTokens = parser.parsedNodes;
         for(ParsedToken currentToken : parsedTokens){
             SemanticAnalysis.VISIT(currentToken);
         }
