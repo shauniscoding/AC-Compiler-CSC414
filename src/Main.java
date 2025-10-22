@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class Main {
@@ -7,5 +8,9 @@ public class Main {
         ArrayList<Token> tokenList = Scanner.getTokenList(test_input);
         Parser parser = new Parser (tokenList);
         parser.Parse();
+
+        ArrayList<ParsedToken> parsedTokens = new ArrayList<ParsedToken>();
+
+
     }
 }
