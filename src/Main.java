@@ -9,8 +9,12 @@ public class Main {
         Parser parser = new Parser (tokenList);
         parser.Parse();
 
-        ArrayList<ParsedToken> parsedTokens = new ArrayList<ParsedToken>();
 
+        ArrayList<ParsedToken> parsedTokens = new ArrayList<ParsedToken>();
+        for(ParsedToken currentToken : parsedTokens){
+            SemanticAnalysis.VISIT(currentToken);
+        }
+        SemanticAnalysis.printSymbolTable();
 
     }
 }

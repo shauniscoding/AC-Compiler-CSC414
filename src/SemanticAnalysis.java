@@ -19,7 +19,7 @@ public class SemanticAnalysis {
             SymbolTable.put(name, type);
         }
         else{
-            System.out.println("SymbolError in Symbol Table repeated value: " + "duplicate declaration");
+            System.out.println("SymbolError in Symbol Table repeated value: duplicate declaration " + name);
         }
     }
 
