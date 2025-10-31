@@ -3,11 +3,13 @@ import java.util.HashMap;
 public class SemanticAnalysis {
     public static HashMap<String, String> SymbolTable = new HashMap<String, String>();
 
+    //CC3 section
+
     //This takes a new token that has the type to distinguish between float and integer
     //It also has the id variable name to store into the table
     public static void VISIT(ParsedToken n){
         if(n.getType() == "floatdcl"){
-            EnterSymbol(n.getId(), "float");
+            EnterSymbol(n.getId(), "floatdcl");
         }
         else{
             EnterSymbol(n.getId(), "integer");
@@ -33,5 +35,55 @@ public class SemanticAnalysis {
             System.out.println(entry.getKey() + " = " + entry.getValue());
         }
     }
+
+
+
+
+
+
+//    //CC4 section
+//    public static void VISIT_COMPUTING(){
+//
+//    }
+
+
+
+
+    public static String CONSISTENT(ParsedToken c1, ParsedToken c2){
+        String m = GENERALIZE(c1.getType(), c2.getType());
+        CONVERT(c1, m);
+        CONVERT(c2, m);
+        return m;
+    }
+
+    public static String GENERALIZE(String t1, String t2){
+        if(t1.equals("floatdcl") || t2.equals("floatdcl")){
+            return "floatdcl";
+        }
+        else{
+            return "integer";
+        }
+    }
+
+    public static void CONVERT(ParsedToken n, String t){
+        if(n.getType().equals("floatdcl") && t.equals("integer")){
+            System.out.println("Error in Semantic Analysis: Illegal type conversion from float to integer");
+        }
+        if(n.getType().equals("integer") && t.equals("floatdcl")){
+            n = new ParsedToken(n.getId(), "floatdcl");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

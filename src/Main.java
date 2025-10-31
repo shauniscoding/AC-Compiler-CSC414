@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        String test_input = "x = 5 + 3 + 312";
+        String test_input = "x = 312.4";
         ArrayList<Token> tokenList = Scanner.getTokenList(test_input);
         Parser parser = new Parser (tokenList);
         parser.Parse();
