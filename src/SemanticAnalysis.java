@@ -7,8 +7,8 @@ public class SemanticAnalysis {
 
     //This takes a new token that has the type to distinguish between float and integer
     //It also has the id variable name to store into the table
-    public static void VISIT(ParsedToken n){
-        if(n.getType() == "floatdcl"){
+    public static void VISIT_SYMDECLARING(ParsedToken n){
+        if(n.getType().equals("floatdcl")){
             EnterSymbol(n.getId(), "floatdcl");
         }
         else{
@@ -37,17 +37,26 @@ public class SemanticAnalysis {
     }
 
 
+    //CC4 section
+    public static void VISIT_COMPUTING(ParsedToken n){
+        n.Type = CONSISTENT(n.child1, n.child2);
+    }
 
+    public static void VISIT_ASSIGNING(ParsedToken n){
+        n.Type = CONVERT(n.child2, n.child1.getType());
+    }
 
+    public static void VISIT_SYMREFERENCING(ParsedToken n){
+        n.Type = LookupSymbol(n.getId());
+    }
 
+    public static void VISIT_INTCONSTING(ParsedToken n){
+        n.Type = "integer";
+    }
 
-//    //CC4 section
-//    public static void VISIT_COMPUTING(){
-//
-//    }
-
-
-
+    public static void VISIT_FLOATCONSTING(ParsedToken n){
+        n.Type = "floatdcl";
+    }
 
     public static String CONSISTENT(ParsedToken c1, ParsedToken c2){
         String m = GENERALIZE(c1.getType(), c2.getType());
@@ -65,13 +74,15 @@ public class SemanticAnalysis {
         }
     }
 
-    public static void CONVERT(ParsedToken n, String t){
+    public static String CONVERT(ParsedToken n, String t){
         if(n.getType().equals("floatdcl") && t.equals("integer")){
             System.out.println("Error in Semantic Analysis: Illegal type conversion from float to integer");
         }
         if(n.getType().equals("integer") && t.equals("floatdcl")){
             n = new ParsedToken(n.getId(), "floatdcl");
+            return "floatdcl";
         }
+        return t;
     }
 
 

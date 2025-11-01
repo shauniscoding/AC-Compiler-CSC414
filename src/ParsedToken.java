@@ -1,7 +1,8 @@
 public class ParsedToken {
     String Id;
     String Type;
-
+    ParsedToken child1;
+    ParsedToken child2;
 
     public ParsedToken(String Id, String Type){
         this.Id = Id;

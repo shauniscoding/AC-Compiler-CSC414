@@ -12,7 +12,7 @@ public class Main {
 
         ArrayList<ParsedToken> parsedTokens = parser.parsedNodes;
         for(ParsedToken currentToken : parsedTokens){
-            SemanticAnalysis.VISIT(currentToken);
+            SemanticAnalysis.VISIT_SYMDECLARING(currentToken);
         }
         SemanticAnalysis.printSymbolTable();
 
