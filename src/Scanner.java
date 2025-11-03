@@ -1,28 +1,22 @@
 import java.util.ArrayList;
 import java.util.Set;
 
-//This is the scanner class, its purpose is to turn
-// the raw text into tokens that can be used
 public class Scanner {
-    //Scanner function to convert string into tokens
-    public static Token Scanner(InputStream s){
+    public static Token Scanner(InputStream s) {
         Token ans = new Token();
         Set<Character> digits = Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-        while(s.Peek() == (' ')){
+        while (s.Peek() == (' ')) {
             s.Advance();
         }
-        if(s.is_end_of_file){
+        if (s.is_end_of_file) {
             ans.type = "$";
-        }
-        else{
-            if(digits.contains(s.Peek())){
+        } else {
+            if (digits.contains(s.Peek())) {
                 ans = ScanDigits(s);
-            }
-            else{
+            } else {
                 char ch = s.Advance();
-
-                switch(ch){
+                switch (ch) {
                     case 'a': case 'b': case 'c': case 'd': case 'e':
                     case 'g': case 'h': case 'j': case 'k': case 'l':
                     case 'm': case 'n': case 'o': case 'q': case 'r':
@@ -54,42 +48,36 @@ public class Scanner {
                 }
             }
         }
-
         return ans;
     }
 
-    //Helper function to turn numbers into tokens
-    public static Token ScanDigits(InputStream s){
+    public static Token ScanDigits(InputStream s) {
         Token tok = new Token();
         tok.val = "";
         Set<Character> digits = Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-
-        while(digits.contains(s.Peek())){
+        while (digits.contains(s.Peek())) {
             tok.val += s.Advance();
         }
-        if (s.Peek() != '.'){
+        if (s.Peek() != '.') {
             tok.type = "inum";
-        }
-        else{
+        } else {
             tok.type = "fnum";
-            do{
+            do {
                 tok.val += s.Advance();
-            }while(digits.contains(s.Peek()));
+            } while (digits.contains(s.Peek()));
         }
-
         return tok;
     }
 
-    public static ArrayList<Token> getTokenList(String input){
+    public static ArrayList<Token> getTokenList(String input) {
         InputStream s = new InputStream(input);
-        ArrayList<Token> tokenList = new ArrayList<Token>();
+        ArrayList<Token> tokenList = new ArrayList<>();
         Token token;
         do {
             token = Scanner.Scanner(s);
             tokenList.add(token);
             System.out.println("type:" + token.type + " val:" + token.val);
-        } while(!token.type.equals("$"));
-
+        } while (!token.type.equals("$"));
         return tokenList;
     }
 }
