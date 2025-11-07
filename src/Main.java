@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        String test_input = "f x x = 312.4";
+        String test_input = "f x = 312.4";
         ArrayList<Token> tokenList = Scanner.getTokenList(test_input);
         Parser parser = new Parser(tokenList);
         parser.Parse();
@@ -22,6 +22,9 @@ public class Main {
                     break;
                 case "float":
                     SemanticAnalysis.VISIT_FLOATCONSTING(currentToken);
+                    break;
+                case "print":
+                    //will eventually be able to print the value of paresed token in here
                     break;
                 default:
                     break;
