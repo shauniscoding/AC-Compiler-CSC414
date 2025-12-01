@@ -52,7 +52,7 @@ public class CodeGeneration {
     public static void VISIT_COMPUTING(ParsedToken n){
         CodeGen(n.child1);
         CodeGen(n.child2);
-        EMIT(n.operation);
+        EMIT(n.operation.equals("plus") ? "+" : "-");
     }
 
     public static void VISIT_SYMREFERENCING(ParsedToken n){

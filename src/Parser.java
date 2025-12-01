@@ -65,19 +65,25 @@ public class Parser {
             ParsedToken rightVal = VAL();
             ParsedToken rightExpr = EXPR();
 
-            ParsedToken opNode = new ParsedToken(operation, "compute");
-            opNode.operation = operation;
-            opNode.child1 = rightVal;
-            opNode.child2 = rightExpr;
-
-            return opNode;
+            if (rightExpr != null) {
+                ParsedToken opNode = new ParsedToken(operation, "compute");
+                opNode.operation = operation;
+                opNode.child1 = rightVal;
+                opNode.child2 = rightExpr;
+                return opNode;
+            } else {
+                ParsedToken opNode = new ParsedToken(operation, "compute");
+                opNode.operation = operation;
+                opNode.child1 = rightVal;
+                opNode.child2 = null;
+                return opNode;
+            }
         }
         return null;
     }
 
     public void STMT() {
         if (ts.type.equals("intdcl") || ts.type.equals("floatdcl")) {
-            // Declaration: intdcl id | floatdcl id
             String declType = ts.type;
             MATCH(ts.type);
             String varName = ts.val;
@@ -96,19 +102,16 @@ public class Parser {
             ParsedToken right;
 
             if (exprNode != null) {
-                right = exprNode;
-                ParsedToken current = right;
-                while (current.child2 != null && current.child2.getType().equals("compute")) {
-                    current = current.child2;
-                }
-                if (current.child2 == null) {
-                    current.child2 = valNode;
-                } else {
-                    ParsedToken newCompute = new ParsedToken("compute", "compute");
-                    newCompute.operation = current.operation;
-                    newCompute.child1 = valNode;
-                    newCompute.child2 = current.child2;
-                    current.child2 = newCompute;
+                right = new ParsedToken(exprNode.operation, "compute");
+                right.operation = exprNode.operation;
+                right.child1 = valNode;
+                right.child2 = exprNode.child1;
+
+                if (exprNode.child2 != null) {
+                    right.child2 = new ParsedToken(exprNode.operation, "compute");
+                    right.child2.operation = exprNode.operation;
+                    right.child2.child1 = exprNode.child1;
+                    right.child2.child2 = exprNode.child2;
                 }
             } else {
                 right = valNode;
