@@ -2,34 +2,25 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        String test_input = "i a f b a = 5 b = a + 3.2 p b";
+        String test_input = "i a " +
+                "f b " +
+                "a = 4 " +
+                "b = a + 3.2 " +
+                "p b";
         ArrayList<Token> tokenList = Scanner.getTokenList(test_input);
         Parser parser = new Parser(tokenList);
         parser.Parse();
 
         ArrayList<ParsedToken> parsedTokens = parser.parsedNodes;
+        SemanticAnalysis.SemanticAnalysis(parsedTokens);
+        SemanticAnalysis.printSymbolTable();
+
+        CodeGeneration.SymbolTable = SemanticAnalysis.SymbolTable;
         for (ParsedToken currentToken : parsedTokens) {
-            switch (currentToken.getType()) {
-                case "intdcl":
-                case "floatdcl":
-                    SemanticAnalysis.VISIT_SYMDECLARING(currentToken);
-                    break;
-                case "assign":
-                    SemanticAnalysis.VISIT_ASSIGNING(currentToken);
-                    break;
-                case "integer":
-                    SemanticAnalysis.VISIT_INTCONSTING(currentToken);
-                    break;
-                case "float":
-                    SemanticAnalysis.VISIT_FLOATCONSTING(currentToken);
-                    break;
-                case "print":
-                    //will eventually be able to print the value of paresed token in here
-                    break;
-                default:
-                    break;
+            String type = currentToken.getType();
+            if (!type.equals("intdcl") && !type.equals("floatdcl")) {
+                CodeGeneration.CodeGen(currentToken);
             }
         }
-        SemanticAnalysis.printSymbolTable();
     }
 }

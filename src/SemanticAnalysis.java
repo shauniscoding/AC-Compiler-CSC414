@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SemanticAnalysis {
@@ -48,6 +49,30 @@ public class SemanticAnalysis {
     public static void CONVERT(ParsedToken n, String t) {
         if (n.getType().equals("float") && t.equals("integer")) {
             System.out.println("Error: Illegal conversion from float to integer");
+        }
+    }
+
+    public static void SemanticAnalysis(ArrayList<ParsedToken>  parsedTokens){
+        for (ParsedToken currentToken : parsedTokens) {
+            switch (currentToken.getType()) {
+                case "intdcl":
+                case "floatdcl":
+                    SemanticAnalysis.VISIT_SYMDECLARING(currentToken);
+                    break;
+                case "assign":
+                    SemanticAnalysis.VISIT_ASSIGNING(currentToken);
+                    break;
+                case "integer":
+                    SemanticAnalysis.VISIT_INTCONSTING(currentToken);
+                    break;
+                case "float":
+                    SemanticAnalysis.VISIT_FLOATCONSTING(currentToken);
+                    break;
+                case "print":
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
