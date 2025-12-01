@@ -1,6 +1,7 @@
 public class ParsedToken {
     String Id;
     String Type;
+    String operation;
     ParsedToken child1;
     ParsedToken child2;
 
@@ -19,6 +20,6 @@ public class ParsedToken {
 
     @Override
     public String toString() {
-        return "ParsedToken{type='" + Type + "', id='" + Id + "'}";
+        return "ParsedToken{type='" + Type + "', id='" + Id + "', op='" + operation + "'}";
     }
 }

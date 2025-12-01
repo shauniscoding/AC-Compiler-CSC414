@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        String test_input = "f x = 312.4";
+        String test_input = "i a f b a = 5 b = a + 3.2 p b";
         ArrayList<Token> tokenList = Scanner.getTokenList(test_input);
         Parser parser = new Parser(tokenList);
         parser.Parse();

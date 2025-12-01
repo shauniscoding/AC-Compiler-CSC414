@@ -40,44 +40,105 @@ public class Parser {
         }
     }
 
-    public void VAL() {
-        if (ts.type.equals("id") || ts.type.equals("inum") || ts.type.equals("fnum")) {
-            MATCH(ts.type);
+    public ParsedToken VAL() {
+        ParsedToken node = null;
+        if (ts.type.equals("id")) {
+            node = new ParsedToken(ts.val, "id");
+            MATCH("id");
+        } else if (ts.type.equals("inum")) {
+            node = new ParsedToken(ts.val, "integer");
+            MATCH("inum");
+        } else if (ts.type.equals("fnum")) {
+            node = new ParsedToken(ts.val, "float");
+            MATCH("fnum");
         } else {
             System.out.println("Error in VAL(): expected id, inum, or fnum, found " + ts.type);
         }
+        return node;
+    }
+
+    public ParsedToken EXPR() {
+        if (ts.type.equals("plus") || ts.type.equals("minus")) {
+            String operation = ts.type;
+            MATCH(ts.type);
+
+            ParsedToken rightVal = VAL();
+            ParsedToken rightExpr = EXPR();
+
+            ParsedToken opNode = new ParsedToken(operation, "compute");
+            opNode.operation = operation;
+            opNode.child1 = rightVal;
+            opNode.child2 = rightExpr;
+
+            return opNode;
+        }
+        return null;
     }
 
     public void STMT() {
         if (ts.type.equals("intdcl") || ts.type.equals("floatdcl")) {
+            // Declaration: intdcl id | floatdcl id
             String declType = ts.type;
             MATCH(ts.type);
             String varName = ts.val;
             MATCH("id");
             parsedNodes.add(new ParsedToken(varName, declType));
+
         } else if (ts.type.equals("id")) {
             String nodeId = ts.val;
             MATCH("id");
             MATCH("assign");
-            String nodeVal = ts.val;
-            String nodeType = "";
-            if (ts.type.equals("inum")) nodeType = "integer";
-            if (ts.type.equals("fnum")) nodeType = "float";
+
+            ParsedToken valNode = VAL();
+            ParsedToken exprNode = EXPR();
+
             ParsedToken left = new ParsedToken(nodeId, "id");
-            ParsedToken right = new ParsedToken(nodeVal, nodeType);
+            ParsedToken right;
+
+            if (exprNode != null) {
+                right = exprNode;
+                ParsedToken current = right;
+                while (current.child2 != null && current.child2.getType().equals("compute")) {
+                    current = current.child2;
+                }
+                if (current.child2 == null) {
+                    current.child2 = valNode;
+                } else {
+                    ParsedToken newCompute = new ParsedToken("compute", "compute");
+                    newCompute.operation = current.operation;
+                    newCompute.child1 = valNode;
+                    newCompute.child2 = current.child2;
+                    current.child2 = newCompute;
+                }
+            } else {
+                right = valNode;
+            }
+
             ParsedToken assignNode = new ParsedToken("assign", "assign");
             assignNode.child1 = left;
             assignNode.child2 = right;
             parsedNodes.add(assignNode);
-            VAL();
+
+        } else if (ts.type.equals("print")) {
+            MATCH("print");
+            String varName = ts.val;
+            MATCH("id");
+            ParsedToken printNode = new ParsedToken(varName, "print");
+            parsedNodes.add(printNode);
+
         } else {
             System.out.println("Error in STMT(): invalid type " + ts.type);
         }
     }
 
     public void STMTS() {
-        while (ts.type.equals("intdcl") || ts.type.equals("floatdcl") || ts.type.equals("id")) {
+        if (ts.type.equals("intdcl") || ts.type.equals("floatdcl") ||
+                ts.type.equals("id") || ts.type.equals("print")) {
             STMT();
+            STMTS();
+        } else if (ts.type.equals("$")) {
+        } else {
+            System.out.println("Error in STMTS(): unexpected token " + ts.type);
         }
     }
 }
