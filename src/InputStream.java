@@ -1,7 +1,28 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class InputStream {
     String input_value;
     int stream_index;
     boolean is_end_of_file;
+
+    public static String readInputFile(String fileName) {
+        Path filePath = Paths.get(fileName);
+
+        try {
+            String content = Files.readString(filePath);
+            content = content.replaceAll("\\s+", " ").trim();
+
+            return content;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public InputStream(String input_value){
         this.input_value = input_value;

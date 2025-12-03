@@ -1,31 +1,16 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
-
-    public static String readInputFile(String fileName) {
-        Path filePath = Paths.get(fileName);
-
-        try {
-            String content = Files.readString(filePath);
-            content = content.replaceAll("\\s+", " ").trim();
-
-            return content;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public static void main(String[] args) {
+        //java -cp out/production/"AC Compiler" Main ACinput1.txt
 
-        String input = readInputFile("ACinput6.txt");
+        if (args.length == 0) {
+            System.out.println("No filepath specified");
+            return;
+        }
+        String inputFile = args[0];
+        String input = InputStream.readInputFile(inputFile);
+
         ArrayList<Token> tokenList = Scanner.getTokenList(input);
         Parser parser = new Parser(tokenList);
         parser.Parse();
