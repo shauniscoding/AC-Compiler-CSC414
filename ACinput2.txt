@@ -1,0 +1,7 @@
+i c
+i d
+i e
+c = 3
+d = 4
+e = a * b
+p e

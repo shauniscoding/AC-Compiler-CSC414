@@ -14,6 +14,7 @@ public class SemanticAnalysis {
             SymbolTable.put(name, type);
         } else {
             System.out.println("SymbolError: duplicate declaration " + name);
+            throw new RuntimeException("SymbolError: duplicate declaration " + name);
         }
     }
 
@@ -33,7 +34,7 @@ public class SemanticAnalysis {
         String rightType = n.child2.getType();
         if (leftType == null) {
             System.out.println("Error: variable " + n.child1.getId() + " not declared");
-            return;
+            throw new RuntimeException("Error: variable " + n.child1.getId() + " not declared");
         }
         CONVERT(n.child2, leftType);
     }
@@ -49,6 +50,7 @@ public class SemanticAnalysis {
     public static void CONVERT(ParsedToken n, String t) {
         if (n.getType().equals("float") && t.equals("integer")) {
             System.out.println("Error: Illegal conversion from float to integer");
+            throw new RuntimeException("Error: Illegal conversion from float to integer");
         }
     }
 

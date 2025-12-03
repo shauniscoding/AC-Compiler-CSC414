@@ -15,13 +15,13 @@ public class Parser {
     public void Parse() {
         STMTS();
         if (!ts.type.equals("$")) {
-            System.out.println("Extra Tokens");
+//            System.out.println("Extra Tokens");
         } else {
-            System.out.println("Parsing complete.");
+//            System.out.println("Parsing complete.");
         }
-        System.out.println("Parsed Tokens: ");
+//        System.out.println("Parsed Tokens: ");
         for (ParsedToken token : parsedNodes) {
-            System.out.println(token.toString());
+//            System.out.println(token.toString());
         }
     }
 
@@ -37,6 +37,8 @@ public class Parser {
             advance();
         } else {
             System.out.println("Error in MATCH(): expected " + expectedType + " but found " + ts.type);
+            throw new RuntimeException("Error in MATCH(): expected " + expectedType + " but found " + ts.type);
+
         }
     }
 
@@ -53,6 +55,7 @@ public class Parser {
             MATCH("fnum");
         } else {
             System.out.println("Error in VAL(): expected id, inum, or fnum, found " + ts.type);
+            throw new RuntimeException("Error in VAL(): expected id, inum, or fnum, found " + ts.type);
         }
         return node;
     }
@@ -131,6 +134,7 @@ public class Parser {
 
         } else {
             System.out.println("Error in STMT(): invalid type " + ts.type);
+            throw new RuntimeException("Error in STMT(): invalid type " + ts.type);
         }
     }
 
@@ -142,6 +146,8 @@ public class Parser {
         } else if (ts.type.equals("$")) {
         } else {
             System.out.println("Error in STMTS(): unexpected token " + ts.type);
+            throw new RuntimeException("Error in STMTS(): unexpected token " + ts.type);
+
         }
     }
 }

@@ -76,7 +76,7 @@ public class Scanner {
         do {
             token = Scanner.Scanner(s);
             tokenList.add(token);
-            System.out.println("type:" + token.type + " val:" + token.val);
+//            System.out.println("type:" + token.type + " val:" + token.val);
         } while (!token.type.equals("$"));
         return tokenList;
     }
